@@ -47,6 +47,8 @@ services:
     restart: always
     environment:
       SHM_HOST: http://api
+#   volumes:
+#      - ./app/scripts/shm/modules/transports_list.js:/app/scripts/shm/modules/transports_list.js
     ports:
       - "0.0.0.0:8081:80"
     depends_on:
@@ -82,7 +84,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-
+    ports:
+      - "3306:3306"
 volumes:
   mysql-data:
     driver: local
