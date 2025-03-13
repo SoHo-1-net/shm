@@ -1,12 +1,12 @@
 package Core::Transport::Ssh;
 
-use parent 'Core::Base';
+use parent 'Core::Base'; # Наследует базовый функционал Core::Base
 
-use v5.14;
-use utf8;
-use Core::Base;
-use Core::Const;
-use Net::OpenSSH;
+use v5.14; # Указывает минимальную версию Perl
+use utf8; # Включает поддержку UTF-8
+use Core::Base; # Повторная подгрузка Core::Base
+use Core::Const; # Константы (SUCCESS, FAIL, и т.п.)
+use Net::OpenSSH; # Подключает библиотеку для SSH
 use POSIX qw(:signal_h WNOHANG);
 use POSIX ":sys_wait_h";
 use POSIX 'setsid';
@@ -170,17 +170,20 @@ sub exec {
     } else {
         $console->append("<font color=green>SUCCESS</font>\n\n");
 
-        my @commands;
-        push @commands, split('\s+', @args{shell} ) if $args{shell};
-        push @commands, (ref $args{cmd} eq 'ARRAY' ? join("\n", @{ $args{cmd} } ) : $args{cmd} ) if $args{cmd};
+    my @commands;
+    if ( $args{shell} ) {
+        push @commands, $args{shell};
+    } elsif ( $args{cmd} ) {
+        push @commands, (ref $args{cmd} eq 'ARRAY' ? join("\n", @{ $args{cmd} } ) : $args{cmd} );
+    }
 
         my $out;
         my ($in, $rout, undef, $ssh_pid) = $ssh->open_ex(
             {
                 stdin_pipe => ( $args{stdin} ? 1 : 0 ),
                 stdout_pipe => 1,
-                stderr_to_stdout => 1,
-                tty => ( $args{stdin} ? 0 : 1 ),
+                stderr_to_stdout => 0,
+                tty => 0,
             },
             @commands,
         ) or die "pipe_out method failed: " . $ssh->error;
