@@ -47,8 +47,6 @@ services:
     restart: always
     environment:
       SHM_HOST: http://api
-#   volumes:
-#      - ./app/scripts/shm/modules/transports_list.js:/app/scripts/shm/modules/transports_list.js
     ports:
       - "0.0.0.0:8081:80"
     depends_on:

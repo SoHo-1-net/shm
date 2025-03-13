@@ -1,4 +1,4 @@
-package Core::Transport::Ssh; # Объявляет модуль (транспорт SSH)
+package Core::Transport::SshSimple; # Объявляет модуль (транспорт SSH)
 
 use parent 'Core::Base'; # Наследует базовый функционал Core::Base
 
@@ -19,8 +19,8 @@ sub events {
     return {
         'exec' => {
             event => {
-                title => 'Execute ssh command',
-                kind => 'Transport::Ssh',
+                title => 'Execute ssh simple command',
+                kind => 'Transport::SshSimple',
                 method => 'send',
                 settings => {},
             },
@@ -75,9 +75,9 @@ sub exec {
 
     my $host = get_ssh_host( $args{host} );
     unless ( $host ) {
-        get_service('report')->add_error("Incorrect ssh host: $host");
+        get_service('report')->add_error("Incorrect ssh simple host: $host");
         return undef, {
-            error => "Incorrect ssh host: $args{host}",
+            error => "Incorrect ssh simple host: $args{host}",
         };
     }
 
@@ -132,7 +132,7 @@ sub exec {
     $host_msg .= " port $args{port}";
     $host_msg .= " through $proxy_jump" if $proxy_jump;
 
-    logger->debug('SSH: ' . $host_msg );
+    logger->debug('SSHSimple: ' . $host_msg );
     $console->append( "<font color=yellow>$host_msg ... </font>" );
 
     my $key_file;
@@ -297,7 +297,7 @@ sub get_ssh_host {
 
     if ( $user ) {
         unless ( $user=~/^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$/i ) {
-            logger->warning('SSH user incorrect: ' . $user );
+            logger->warning('SSHSimple user incorrect: ' . $user );
             return undef;
         }
     } else {
@@ -305,7 +305,7 @@ sub get_ssh_host {
     }
 
     unless ( is_host( $host_name ) ) {
-        logger->warning('SSH host incorrect: ' . $host_name );
+        logger->warning('SSHSimple host incorrect: ' . $host_name );
         return undef;
     }
 
