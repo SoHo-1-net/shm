@@ -304,6 +304,44 @@ my $routes = {
         required => ['user_id','money'],
     },
 },
+'/admin/user/bank' => {
+    GET => {
+        controller => 'Bank',
+        method => 'list',
+    },
+    PUT => {
+        controller => 'Bank',
+    },
+    POST => {
+        controller => 'Bank',
+    },
+    DELETE => {
+        controller => 'Bank',
+    },
+},
+'/admin/user/bank/:bank_id' => {
+    GET => {
+        controller => 'Bank',
+        method => 'show',
+        required => ['bank_id'],
+        args => {
+            format => 'plain',
+            do_not_parse => 1,
+        },
+    },
+    PUT => {
+        controller => 'Bank',
+        required => ['bank_id','PUTDATA'],
+    },
+    POST => {
+        controller => 'Bank',
+        required => ['bank_id','POSTDATA'],
+    },
+    DELETE => {
+        controller => 'Bank',
+        required => ['bank_id'],
+    },
+},
 '/admin/user/profile' => {
     GET => {
         controller => 'Profile',

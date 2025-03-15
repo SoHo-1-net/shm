@@ -252,7 +252,7 @@ CREATE TABLE `users` (
   `settings` json DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `users_uniq` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `withdraw_history`;
 CREATE TABLE `withdraw_history` (
@@ -319,15 +319,49 @@ CREATE TABLE `console` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS `banks`;
+
+CREATE TABLE `banks` (
+  `bank_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `bic_base` VARCHAR(9) DEFAULT NULL,
+  `bank_name_base` VARCHAR(255) DEFAULT NULL,
+  `bank_city` VARCHAR(20) DEFAULT NULL,
+  `correspondent_account_base` VARCHAR(20) DEFAULT NULL,
+  PRIMARY KEY (`bank_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+DELIMITER ;
+
 DROP TABLE IF EXISTS `profiles`;
+
 CREATE TABLE `profiles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `data` json DEFAULT NULL,
-  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users (user_id),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) DEFAULT NULL,
+  `passport` VARCHAR(255) DEFAULT NULL,
+  `address_actual` VARCHAR(255) DEFAULT NULL,
+  `phone` VARCHAR(20) DEFAULT NULL,
+  `email` VARCHAR(100) DEFAULT NULL,
+  `contract_number` VARCHAR(50) DEFAULT NULL,
+  `address_registration` VARCHAR(255) DEFAULT NULL,
+  `inn` VARCHAR(12) DEFAULT NULL,
+  `kpp` VARCHAR(12) DEFAULT NULL,
+  `ogrn` VARCHAR(15) DEFAULT NULL,
+  `actual_address` VARCHAR(255) DEFAULT NULL,
+  `legal_address` VARCHAR(255) DEFAULT NULL,
+  `mail_address` VARCHAR(255) DEFAULT NULL,
+  `contact_phone` VARCHAR(20) DEFAULT NULL,
+  `email_invoice` VARCHAR(100) DEFAULT NULL,
+  `director_name` VARCHAR(255) DEFAULT NULL,
+  `chief_accountant` VARCHAR(255) DEFAULT NULL,
+  `bank_account` VARCHAR(255) DEFAULT NULL,
+  `bank_id` VARCHAR(255) DEFAULT NULL,
+  `data` json NOT NULL,
+  `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=500 DEFAULT CHARSET=utf8mb4;
+
+DELIMITER ;
 
 CREATE TABLE IF NOT EXISTS `config` (
   `key` char(32) NOT NULL,
